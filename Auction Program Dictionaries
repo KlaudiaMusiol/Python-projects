@@ -1,0 +1,24 @@
+from replit import clear
+
+highest_bid = 0
+winner = ""
+names_and_bids = {}
+
+def add_data_to_dict():
+    name = input("What is your name?\n")
+    price = float(input("Please bid price (in $)\n"))
+    names_and_bids[name] = price
+    should_repeat = input("Are there more users who want to bid? Y/N\n").lower()
+    if should_repeat == "y":
+        clear()
+        add_data_to_dict()
+
+add_data_to_dict()
+
+for name in names_and_bids:
+    if names_and_bids[name] > highest_bid:
+        highest_bid = names_and_bids[name]
+        winner = name
+        
+print(f"The winner is: {winner} and the highest bid was: {highest_bid}$")
+
