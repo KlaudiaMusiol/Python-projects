@@ -1,0 +1,71 @@
+logo = """
+ _____________________
+|  _________________  |
+| |              0. | | 
+| |_________________| |
+|  ___ ___ ___   ___  | 
+| | 7 | 8 | 9 | | + | |
+| |___|___|___| |___| |
+| | 4 | 5 | 6 | | - | | 
+| |___|___|___| |___| |
+| | 1 | 2 | 3 | | x | |
+| |___|___|___| |___| |
+| | . | 0 | = | | / | |
+| |___|___|___| |___| |
+|_____________________|
+"""
+def add(n1, n2):
+    return n1 + n2
+
+def substract(n1, n2):
+    return n1 - n2
+
+def multiply(n1, n2):
+    return n1 * n2
+
+def divide(n1, n2):
+    if n2 == 0:
+        return "You can't divide by 0"
+    else:
+        return n1 / n2
+
+math_operations = {
+"+": add,
+"-": substract,
+"*": multiply,
+"/": divide,
+}
+
+def calculator():
+    
+    print(logo)
+    
+    n1 = float(input("What's the first number?: \n\n"))
+    print("\nOperations:\n")
+    for operation in math_operations:
+        print(operation)
+        
+    continuation = True
+    while continuation == True:
+       
+        choosen_operation = input("\nPick an operation: \n\n")
+        n2 = float(input("\n What's the next number? \n\n"))
+        
+        function = math_operations[choosen_operation]
+        result = function(n1, n2)
+        
+        print(f"\n{n1} {choosen_operation} {n2} = {result}\n")
+        
+        ask_continuation = input("Do you want to continue? 'Y' to continue, 'N' to exit and 'C' to start a new calculation.\n\n").lower()
+        if ask_continuation == "y":
+            continuation = True
+            n1 = result
+        elif ask_continuation == "n":
+            continuation = False
+        elif ask_continuation == "c":
+            calculator()
+        else:
+            continuation = False
+            print("\nYou should enter 'Y', 'C' or 'N'.\n")
+
+calculator()
