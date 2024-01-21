@@ -1,0 +1,115 @@
+import random
+from replit import clear
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+def deal_card():
+    card = random.choice(cards)
+    return card
+
+def ace_check(user):
+    if adding_user_cards(user) > 21:
+        if 11 in user:
+            for i in range(len(user)):
+                if user[i] == 11:
+                    user[i] = 1
+            if adding_user_cards(user) > 21:
+                print("\nYou lose!")
+    return user
+
+def adding_user_cards(user):
+    summed_cards = 0
+    for card in user:
+        summed_cards += card
+    return summed_cards
+
+def adding_computer_cards(computer):
+    summed_cards = 0
+    for card in computer:
+      summed_cards += card
+    return summed_cards
+
+def print_scores(user, computer):
+    print(f"\n\n\n\nComputer's cards are: {computer}. Sum: {adding_computer_cards(computer)}.")
+    print(f"Your cards are: {user}. Sum: {adding_user_cards(user)}.")
+
+def compare(user, computer):
+    if adding_computer_cards(computer) > 21 and adding_user_cards(user) > 21:
+        print_scores(user, computer)
+        print("\nYou lose!")
+        return True
+    elif adding_user_cards(user) > 21:
+        print_scores(user, computer)
+        print("\nYou lose")
+        return True
+    elif adding_computer_cards(computer) > 21:
+        print_scores(user, computer)
+        print("\nYou win")
+        return True
+    elif adding_computer_cards(computer) > adding_user_cards(user):
+        print_scores(user, computer)
+        print("\nYou lose")
+        return True
+    elif adding_user_cards(user) > adding_computer_cards(computer):
+        print_scores(user, computer)
+        print("\nYou win!")
+        return True
+    else:
+        print_scores(user, computer)
+        print("\nIt's a draw")
+        return True
+
+def game():
+
+    user = []
+    computer = []
+    game_over = False
+    
+    user.append(deal_card())
+    user.append(deal_card())
+    computer.append(deal_card())
+    computer.append(deal_card())
+
+    while game_over == False:
+    
+        if 11 in user and 10 in user:
+            print("\nYou have blackjack, you win!")
+            game_over = True
+        
+        if 11 in computer and 10 in computer:
+            print("\nComputer has blackjack, you lose!")
+            game_over = True
+        
+        adding_user_cards(user)
+        adding_computer_cards(computer)
+        ace_check(user)
+        user = ace_check(user)
+        
+        print_scores(user, computer)
+        
+        drawing_more_flag = True
+        while drawing_more_flag == True:
+            drawing_more = input("\nDo you want to draw another card? 'Y'/'N'").lower()
+            if drawing_more == "y":
+                drawing_more_flag = True
+                user.append(deal_card())
+                ace_check(user)
+                user = ace_check(user)
+                print(f"Your new set of cards is: {user}. Sum: {adding_user_cards(user)}.")
+                if adding_user_cards(user) > 21:
+                    drawing_more_flag = False
+                    game_over = True
+            else: 
+                drawing_more_flag = False
+        
+        while adding_computer_cards(computer) < 17:
+            computer.append(deal_card())
+            adding_computer_cards(computer)
+        
+        if compare(user, computer) == True:
+            game_over = True
+        
+while input("\nDo you want to play a game of Blackjack? Type 'y' or 'n': ") == "y":
+    clear()
+    game()
+            
