@@ -1,0 +1,36 @@
+import random
+from replit import clear
+
+def game():
+    print("Hello, I'm thinking about a number between 1 and 100.")
+    mode = input("Choose a difficulty. Type 'E' for 'Easy' and 'H' for 'Hard': ").lower()
+    if mode == "h":
+        lives_remaining = 5
+        print("You've chosen a hard mode. You have 5 attempts to guess the number.")
+    elif mode == "e":
+        lives_remaining = 10
+        print("You've chosen an easy mode. You have 10 attempts to guess the number.")
+    else: 
+        print("You were supposed to pick 'E' or 'H'. \nWe see you are not able to do that correctly, we picked an easy mode for you.\nYou have 10 attempts to guess the number.")
+        lives_remaining = 10
+
+    answer = random.choice(range(1,101))
+
+    lives_remaining_while = lives_remaining  
+    
+    while lives_remaining_while >  0:
+        guess = int(input("Please make a guess: \n"))
+        lives_remaining_while -= 1
+        if guess == answer:
+            print(f"You win! The answer was {answer}")
+            lives_remaining_while = 0
+        elif lives_remaining_while == 0:
+            print(f"\nSorry, you run out of lives, the answer was: {answer}.\n")
+        elif guess > answer:
+            print("Too high.")
+        elif guess < answer: 
+            print("Too low.")
+        
+while input("\nDo you want to play a game of 'Guess the number'? \nType 'y' or 'n': ") == "y":
+  clear()
+  game()
