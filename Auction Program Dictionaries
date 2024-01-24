@@ -22,3 +22,4 @@ for name in names_and_bids:
         
 print(f"The winner is: {winner} and the highest bid was: {highest_bid}$")
 
+
