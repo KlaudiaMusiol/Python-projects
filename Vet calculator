@@ -4,3 +4,4 @@ cost_per_rabbit = float(input("How much does a vet check cost for one rabbit?\n"
 tip = (1+(int(input("What percentage tip would you like to give?\n")))/100)
 total_cost = round((rabbits_count * cost_per_rabbit * tip),2)
 print(f"The total cost for {rabbits_count} rabbits is {total_cost} (with tip)")
+
