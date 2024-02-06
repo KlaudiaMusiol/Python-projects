@@ -1,0 +1,146 @@
+MENU = {
+    "nigiri": {
+        "ingredients": {
+            "rice": 50,
+            "salmon": 18,
+        },
+        "cost": 15,
+    },
+    "maki": {
+        "ingredients": {
+            "rice": 200,
+            "nori": 150,
+            "salmon": 24,
+        },
+        "cost": 25,
+    },
+    "uramaki": {
+        "ingredients": {
+            "rice": 250,
+            "nori": 100,
+            "salmon": 24,
+        },
+        "cost": 30,
+    }
+}
+
+resources = {
+    "rice": 300,
+    "nori": 200,
+    "salmon": 100,
+}
+
+money = 0
+
+
+def prompt():
+    choice = input("What would you like? N = nigiri, U = uramaki and M = maki: \n").lower()
+    if choice == "report":
+        for resource, value in resources.items():
+            print(resource, ":", value)
+        print(f"Money: ${money}")
+    return choice
+
+
+def check_resources(sushi_type):
+    if sushi_type == "n":
+        if resources["rice"] < MENU["nigiri"]["ingredients"]["rice"]:
+            print("Sorry, there is not enough rice.")
+            return False
+        elif resources["salmon"] < MENU["nigiri"]["ingredients"]["salmon"]:
+            print("Sorry, there is not enough salmon.")
+            return False
+        else:
+            print("Your order will be processed.")
+            return True
+    elif sushi_type == "m":
+        if resources["rice"] < MENU["maki"]["ingredients"]["rice"]:
+            print("Sorry, there is not enough rice.")
+            return False
+        elif resources["salmon"] < MENU["maki"]["ingredients"]["salmon"]:
+            print("Sorry, there is not enough salmon.")
+            return False
+        elif resources["nori"] < MENU["maki"]["ingredients"]["nori"]:
+            print("Sorry, there is not enough nori.")
+            return False
+        else:
+            print("Your order will be processed.")
+            return True
+    elif sushi_type == "u":
+        if resources["rice"] < MENU["uramaki"]["ingredients"]["rice"]:
+            print("Sorry, there is not enough rice.")
+            return False
+        elif resources["salmon"] < MENU["uramaki"]["ingredients"]["salmon"]:
+            print("Sorry, there is not enough salmon.")
+            return False
+        elif resources["nori"] < MENU["uramaki"]["ingredients"]["nori"]:
+            print("Sorry, there is not enough nori.")
+            return False
+        else:
+            print("Your order will be processed.")
+            return True
+    elif sushi_type != "report" and sushi_type != "off":
+        print("You were supposed to choose N/M/U.")
+        return False
+
+
+def money_processing():
+    dollar = int(input("how many $1? "))
+    dollar2 = int(input("how many $2? "))
+    dollar5 = int(input("how many $5? "))
+    dollar10 = int(input("how many $10? "))
+    dollar_value = dollar * 1 + dollar2 * 2 + dollar5 * 5 + dollar10 * 10
+    return dollar_value
+
+
+def finalize_transaction(sushi_type, money_from_customer):
+    if sushi_type == "n":
+        needed_money = MENU["nigiri"]["cost"]
+    elif sushi_type == "u":
+        needed_money = MENU["uramaki"]["cost"]
+    elif sushi_type == "m":
+        needed_money = MENU["maki"]["cost"]
+    if needed_money > money_from_customer:
+        print("Sorry, that's not enough. Money refunded.")
+        return 0
+    elif money_from_customer > needed_money:
+        print(f"Here is ${money_from_customer - needed_money} in change.")
+        return needed_money
+    elif money_from_customer == needed_money:
+        print(f"Thanks for being so accurate.")
+        return needed_money
+
+
+def use_resources(sushi_type, ingredients_list):
+    if sushi_type == "n":
+        needed_rice = MENU["nigiri"]["ingredients"]["rice"]
+        needed_salmon = MENU["nigiri"]["ingredients"]["salmon"]
+        needed_nori = 0
+    elif sushi_type == "u":
+        needed_rice = MENU["uramaki"]["ingredients"]["rice"]
+        needed_salmon = MENU["uramaki"]["ingredients"]["salmon"]
+        needed_nori = MENU["uramaki"]["ingredients"]["nori"]
+    elif sushi_type == "m":
+        needed_rice = MENU["maki"]["cost"]
+        needed_salmon = MENU["maki"]["ingredients"]["salmon"]
+        needed_nori = MENU["maki"]["ingredients"]["nori"]
+    ingredients_list["rice"] -= needed_rice
+    ingredients_list["salmon"] -= needed_salmon
+    ingredients_list["nori"] -= needed_nori
+    return ingredients_list
+
+
+is_on = True
+while is_on:
+    customer_choice = prompt()  # ask customer for a choice
+    if customer_choice == "off":
+        is_on = False
+    elif customer_choice == "report":
+        is_on = False
+    if check_resources(customer_choice):  # check if machine has enough resources
+        money_get = money_processing()
+        earned = finalize_transaction(customer_choice, money_get)  # dealing with money, change and cost
+        if money_get > 0:# take money from customer
+            money += earned  # count earned money
+            resources = use_resources(customer_choice, resources)  # update resources
+            print("Here is your sushi.")
