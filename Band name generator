@@ -1,4 +1,4 @@
 print("Welcome in the Brand Name Generator\n")
 food = input("What is your favourite food?\n")
 pet = input("What is your pet name?\n")
-print("Good job! Your brand name could be " + food + " " + pet)
+print(f"Good job! Your brand name could be " + food + " " + pet)
